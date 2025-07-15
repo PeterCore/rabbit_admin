@@ -54,7 +54,7 @@ function SchedulesPage() {
                 <Table.ColumnHeader>老师姓名</Table.ColumnHeader>
                 <Table.ColumnHeader>学科</Table.ColumnHeader>
                 <Table.ColumnHeader>课时数</Table.ColumnHeader>
-                <Table.ColumnHeader>费用 (课时/元)</Table.ColumnHeader>
+                <Table.ColumnHeader>费用 (元/课时)</Table.ColumnHeader>
                 <Table.ColumnHeader>备注</Table.ColumnHeader>
                 <Table.ColumnHeader>操作</Table.ColumnHeader>
               </Table.Row>

@@ -6,27 +6,27 @@ import {
   Heading,
   Input,
   Text,
-} from "@chakra-ui/react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useState } from "react"
-import { type SubmitHandler, useForm } from "react-hook-form"
+} from "@chakra-ui/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
 
 import {
   type ApiError,
   type UserPublic,
   type UserUpdateMe,
   UsersService,
-} from "@/client"
-import useAuth from "@/hooks/useAuth"
-import useCustomToast from "@/hooks/useCustomToast"
-import { emailPattern, handleError } from "@/utils"
-import { Field } from "../ui/field"
+} from "@/client";
+import useAuth from "@/hooks/useAuth";
+import useCustomToast from "@/hooks/useCustomToast";
+import { emailPattern, handleError } from "@/utils";
+import { Field } from "../ui/field";
 
 const UserInformation = () => {
-  const queryClient = useQueryClient()
-  const { showSuccessToast } = useCustomToast()
-  const [editMode, setEditMode] = useState(false)
-  const { user: currentUser } = useAuth()
+  const queryClient = useQueryClient();
+  const { showSuccessToast } = useCustomToast();
+  const [editMode, setEditMode] = useState(false);
+  const { user: currentUser } = useAuth();
   const {
     register,
     handleSubmit,
@@ -40,47 +40,47 @@ const UserInformation = () => {
       full_name: currentUser?.full_name,
       email: currentUser?.email,
     },
-  })
+  });
 
   const toggleEditMode = () => {
-    setEditMode(!editMode)
-  }
+    setEditMode(!editMode);
+  };
 
   const mutation = useMutation({
     mutationFn: (data: UserUpdateMe) =>
       UsersService.updateUserMe({ requestBody: data }),
     onSuccess: () => {
-      showSuccessToast("User updated successfully.")
+      showSuccessToast("User updated successfully.");
     },
     onError: (err: ApiError) => {
-      handleError(err)
+      handleError(err);
     },
     onSettled: () => {
-      queryClient.invalidateQueries()
+      queryClient.invalidateQueries();
     },
-  })
+  });
 
   const onSubmit: SubmitHandler<UserUpdateMe> = async (data) => {
-    mutation.mutate(data)
-  }
+    mutation.mutate(data);
+  };
 
   const onCancel = () => {
-    reset()
-    toggleEditMode()
-  }
+    reset();
+    toggleEditMode();
+  };
 
   return (
     <>
       <Container maxW="full">
         <Heading size="sm" py={4}>
-          User Information
+          用户信息
         </Heading>
         <Box
           w={{ sm: "full", md: "sm" }}
           as="form"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <Field label="Full name">
+          <Field label="姓名">
             {editMode ? (
               <Input
                 {...register("full_name", { maxLength: 30 })}
@@ -101,14 +101,14 @@ const UserInformation = () => {
           </Field>
           <Field
             mt={4}
-            label="Email"
+            label="邮箱"
             invalid={!!errors.email}
             errorText={errors.email?.message}
           >
             {editMode ? (
               <Input
                 {...register("email", {
-                  required: "Email is required",
+                  required: "邮箱是必填项",
                   pattern: emailPattern,
                 })}
                 type="email"
@@ -128,7 +128,7 @@ const UserInformation = () => {
               loading={editMode ? isSubmitting : false}
               disabled={editMode ? !isDirty || !getValues("email") : false}
             >
-              {editMode ? "Save" : "Edit"}
+              {editMode ? "保存" : "编辑"}
             </Button>
             {editMode && (
               <Button
@@ -144,7 +144,7 @@ const UserInformation = () => {
         </Box>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default UserInformation
+export default UserInformation;

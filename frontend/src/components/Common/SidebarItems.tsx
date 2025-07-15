@@ -16,7 +16,7 @@ import type { UserPublic } from "@/client";
 
 const items = [
   { icon: FiHome, title: "首页", path: "/" },
-  { icon: FiBriefcase, title: "添加项目", path: "/items" },
+  // { icon: FiBriefcase, title: "添加项目", path: "/items" },
   { icon: FiSettings, title: "用户设置", path: "/settings" },
   { icon: FiUsers, title: "管理员", path: "/admin" },
   { icon: FiUsers, title: "老师管理", path: "/teachers" },
