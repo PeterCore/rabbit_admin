@@ -165,3 +165,6 @@ def delete_course_api(
         )
     
     return {"message": "课程安排删除成功"} 
+
+
+ 

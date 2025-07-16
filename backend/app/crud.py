@@ -415,3 +415,72 @@ def delete_course(session, course_id: uuid.UUID) -> bool:
     session.delete(course)
     session.commit()
     return True
+
+
+def get_student_courses(session, student_id: uuid.UUID, status: str | None = None, skip: int = 0, limit: int = 100) -> List[dict]:
+    """
+    获取学生参加的课程列表，支持按课程状态筛选
+    """
+    from app.models import Course, Schedule, Teacher, Subject, Student, CourseStudent, CourseStatus
+    
+    # 构建查询条件
+    query = select(Course).join(CourseStudent).where(CourseStudent.student_id == student_id)
+    
+    # 如果指定了状态，添加状态筛选条件
+    if status:
+        try:
+            course_status = CourseStatus(status)
+            query = query.where(Course.status == course_status)
+        except ValueError:
+            # 如果状态值无效，返回空列表
+            return []
+    
+    # 添加分页
+    query = query.offset(skip).limit(limit)
+    
+    courses = session.exec(query).all()
+    
+    result = []
+    for course in courses:
+        # 获取课表信息
+        schedule = session.get(Schedule, course.schedule_id)
+        teacher = None
+        subject = None
+        if schedule:
+            teacher = session.get(Teacher, schedule.teacher_id)
+            if teacher:
+                subject = session.get(Subject, teacher.subject_id)
+        
+        # 获取该课程的所有学生信息
+        students = []
+        course_students = session.exec(
+            select(CourseStudent).where(CourseStudent.course_id == course.id)
+        ).all()
+        
+        for cs in course_students:
+            student = session.get(Student, cs.student_id)
+            if student:
+                students.append({
+                    "id": student.id,
+                    "name": student.name,
+                    "remark": student.remark,
+                    "phone": student.phone,
+                    "genders": student.genders,
+                    "address": student.address
+                })
+        
+        course_dict = {
+            "id": course.id,
+            "schedule_id": course.schedule_id,
+            "teacher_name": teacher.name if teacher else None,
+            "subject_name": subject.name if subject else None,
+            "start_time": course.start_time,
+            "end_time": course.end_time,
+            "address": course.address,
+            "status": course.status,
+            "remark": course.remark,
+            "students": students
+        }
+        result.append(course_dict)
+    
+    return result
