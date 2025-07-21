@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { CourseCreateCourseApiData, CourseCreateCourseApiResponse, CourseListCoursesData, CourseListCoursesResponse, CourseGetCourseApiData, CourseGetCourseApiResponse, CourseUpdateCourseApiData, CourseUpdateCourseApiResponse, CourseDeleteCourseApiData, CourseDeleteCourseApiResponse, ItemsReadItemsData, ItemsReadItemsResponse, ItemsCreateItemData, ItemsCreateItemResponse, ItemsReadItemData, ItemsReadItemResponse, ItemsUpdateItemData, ItemsUpdateItemResponse, ItemsDeleteItemData, ItemsDeleteItemResponse, LoginLoginAccessTokenData, LoginLoginAccessTokenResponse, LoginTestTokenResponse, LoginRecoverPasswordData, LoginRecoverPasswordResponse, LoginResetPasswordData, LoginResetPasswordResponse, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentResponse, PrivateCreateUserData, PrivateCreateUserResponse, RoleCreateRoleApiData, RoleCreateRoleApiResponse, RoleListRolesData, RoleListRolesResponse, RoleGetRoleApiData, RoleGetRoleApiResponse, RoleUpdateRoleApiData, RoleUpdateRoleApiResponse, RoleDeleteRoleApiData, RoleDeleteRoleApiResponse, ScheduleCreateScheduleApiData, ScheduleCreateScheduleApiResponse, ScheduleListSchedulesData, ScheduleListSchedulesResponse, ScheduleGetScheduleApiData, ScheduleGetScheduleApiResponse, ScheduleUpdateScheduleApiData, ScheduleUpdateScheduleApiResponse, ScheduleDeleteScheduleApiData, ScheduleDeleteScheduleApiResponse, StudentCreateStudentApiData, StudentCreateStudentApiResponse, StudentListStudentsData, StudentListStudentsResponse, StudentGetStudentApiData, StudentGetStudentApiResponse, StudentUpdateStudentApiData, StudentUpdateStudentApiResponse, StudentDeleteStudentApiData, StudentDeleteStudentApiResponse, SubjectCreateSubjectApiData, SubjectCreateSubjectApiResponse, SubjectListSubjectsData, SubjectListSubjectsResponse, SubjectGetSubjectApiData, SubjectGetSubjectApiResponse, SubjectUpdateSubjectApiData, SubjectUpdateSubjectApiResponse, SubjectDeleteSubjectApiData, SubjectDeleteSubjectApiResponse, TeacherCreateTeacherApiData, TeacherCreateTeacherApiResponse, TeacherListTeachersData, TeacherListTeachersResponse, TeacherGetTeacherApiData, TeacherGetTeacherApiResponse, TeacherUpdateTeacherApiData, TeacherUpdateTeacherApiResponse, TeacherDeleteTeacherApiData, TeacherDeleteTeacherApiResponse, UsersReadUsersData, UsersReadUsersResponse, UsersCreateUserData, UsersCreateUserResponse, UsersReadUserMeResponse, UsersDeleteUserMeResponse, UsersUpdateUserMeData, UsersUpdateUserMeResponse, UsersUpdatePasswordMeData, UsersUpdatePasswordMeResponse, UsersRegisterUserData, UsersRegisterUserResponse, UsersReadUserByIdData, UsersReadUserByIdResponse, UsersUpdateUserData, UsersUpdateUserResponse, UsersDeleteUserData, UsersDeleteUserResponse, UtilsTestEmailData, UtilsTestEmailResponse, UtilsHealthCheckResponse } from './types.gen';
+import type { CourseCreateCourseApiData, CourseCreateCourseApiResponse, CourseListCoursesData, CourseListCoursesResponse, CourseGetCourseApiData, CourseGetCourseApiResponse, CourseUpdateCourseApiData, CourseUpdateCourseApiResponse, CourseDeleteCourseApiData, CourseDeleteCourseApiResponse, ItemsReadItemsData, ItemsReadItemsResponse, ItemsCreateItemData, ItemsCreateItemResponse, ItemsReadItemData, ItemsReadItemResponse, ItemsUpdateItemData, ItemsUpdateItemResponse, ItemsDeleteItemData, ItemsDeleteItemResponse, LoginLoginAccessTokenData, LoginLoginAccessTokenResponse, LoginTestTokenResponse, LoginRecoverPasswordData, LoginRecoverPasswordResponse, LoginResetPasswordData, LoginResetPasswordResponse, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentResponse, PrivateCreateUserData, PrivateCreateUserResponse, RoleCreateRoleApiData, RoleCreateRoleApiResponse, RoleListRolesData, RoleListRolesResponse, RoleGetRoleApiData, RoleGetRoleApiResponse, RoleUpdateRoleApiData, RoleUpdateRoleApiResponse, RoleDeleteRoleApiData, RoleDeleteRoleApiResponse, ScheduleCreateScheduleApiData, ScheduleCreateScheduleApiResponse, ScheduleListSchedulesData, ScheduleListSchedulesResponse, ScheduleGetScheduleApiData, ScheduleGetScheduleApiResponse, ScheduleUpdateScheduleApiData, ScheduleUpdateScheduleApiResponse, ScheduleDeleteScheduleApiData, ScheduleDeleteScheduleApiResponse, StudentCreateStudentApiData, StudentCreateStudentApiResponse, StudentListStudentsData, StudentListStudentsResponse, StudentGetStudentApiData, StudentGetStudentApiResponse, StudentUpdateStudentApiData, StudentUpdateStudentApiResponse, StudentDeleteStudentApiData, StudentDeleteStudentApiResponse, StudentGetStudentCoursesApiData, StudentGetStudentCoursesApiResponse, SubjectCreateSubjectApiData, SubjectCreateSubjectApiResponse, SubjectListSubjectsData, SubjectListSubjectsResponse, SubjectGetSubjectApiData, SubjectGetSubjectApiResponse, SubjectUpdateSubjectApiData, SubjectUpdateSubjectApiResponse, SubjectDeleteSubjectApiData, SubjectDeleteSubjectApiResponse, TeacherCreateTeacherApiData, TeacherCreateTeacherApiResponse, TeacherListTeachersData, TeacherListTeachersResponse, TeacherGetTeacherApiData, TeacherGetTeacherApiResponse, TeacherUpdateTeacherApiData, TeacherUpdateTeacherApiResponse, TeacherDeleteTeacherApiData, TeacherDeleteTeacherApiResponse, UsersReadUsersData, UsersReadUsersResponse, UsersCreateUserData, UsersCreateUserResponse, UsersReadUserMeResponse, UsersDeleteUserMeResponse, UsersUpdateUserMeData, UsersUpdateUserMeResponse, UsersUpdatePasswordMeData, UsersUpdatePasswordMeResponse, UsersRegisterUserData, UsersRegisterUserResponse, UsersReadUserByIdData, UsersReadUserByIdResponse, UsersUpdateUserData, UsersUpdateUserResponse, UsersDeleteUserData, UsersDeleteUserResponse, UtilsTestEmailData, UtilsTestEmailResponse, UtilsHealthCheckResponse } from './types.gen';
 
 export class CourseService {
     /**
@@ -662,6 +662,40 @@ export class StudentService {
             url: '/api/v1/students/{student_id}',
             path: {
                 student_id: data.studentId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Get Student Courses Api
+     * 获取学生参加的课程列表，支持按课程状态筛选
+     *
+     * - **student_id**: 学生ID
+     * - **status**: 课程状态筛选（可选）：not_started, in_progress, completed, cancelled
+     * - **skip**: 跳过的记录数（分页用）
+     * - **limit**: 返回的最大记录数（分页用）
+     * @param data The data for the request.
+     * @param data.studentId
+     * @param data.status
+     * @param data.skip
+     * @param data.limit
+     * @returns CourseWithDetails Successful Response
+     * @throws ApiError
+     */
+    public static getStudentCoursesApi(data: StudentGetStudentCoursesApiData): CancelablePromise<StudentGetStudentCoursesApiResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/students/{student_id}/courses/',
+            path: {
+                student_id: data.studentId
+            },
+            query: {
+                status: data.status,
+                skip: data.skip,
+                limit: data.limit
             },
             errors: {
                 422: 'Validation Error'

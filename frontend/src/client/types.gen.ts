@@ -684,6 +684,15 @@ export type StudentDeleteStudentApiData = {
 
 export type StudentDeleteStudentApiResponse = (boolean);
 
+export type StudentGetStudentCoursesApiData = {
+    limit?: number;
+    skip?: number;
+    status?: (string | null);
+    studentId: string;
+};
+
+export type StudentGetStudentCoursesApiResponse = (Array<CourseWithDetails>);
+
 export type SubjectCreateSubjectApiData = {
     requestBody: SubjectCreate;
 };
