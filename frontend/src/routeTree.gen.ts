@@ -25,6 +25,7 @@ import { Route as LayoutSchedulesImport } from './routes/_layout/schedules'
 import { Route as LayoutItemsImport } from './routes/_layout/items'
 import { Route as LayoutCoursesImport } from './routes/_layout/courses'
 import { Route as LayoutAdminImport } from './routes/_layout/admin'
+import { Route as LayoutStudentCoursesStudentIdImport } from './routes/_layout/student-courses.$studentId'
 
 // Create/Update Routes
 
@@ -98,6 +99,12 @@ const LayoutAdminRoute = LayoutAdminImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
+const LayoutStudentCoursesStudentIdRoute =
+  LayoutStudentCoursesStudentIdImport.update({
+    path: '/student-courses/$studentId',
+    getParentRoute: () => LayoutRoute,
+  } as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -158,6 +165,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutIndexImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/student-courses/$studentId': {
+      preLoaderRoute: typeof LayoutStudentCoursesStudentIdImport
+      parentRoute: typeof LayoutImport
+    }
   }
 }
 
@@ -174,6 +185,7 @@ export const routeTree = rootRoute.addChildren([
     LayoutSubjectsRoute,
     LayoutTeachersRoute,
     LayoutIndexRoute,
+    LayoutStudentCoursesStudentIdRoute,
   ]),
   LoginRoute,
   RecoverPasswordRoute,
